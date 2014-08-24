@@ -42,12 +42,16 @@ d3.csv("data.txt", function(error, data) {
   var y0 = 0;
 	d.genes = color.domain().map(function(name) { return {name: name, y0: y0, y1: y0 += +d[name]}; });
   // console.log("got here");
-  console.log(d.y0,d.y1);
+  // console.log(d.y0,d.y1);
+  console.log("d.genes.length, d.genes: " + d.genes.length + ", " + d.genes);
 	d.genes.forEach(function(d) { d.y0 /= y0; d.y1 /= y0; });
     });
     data.sort(function(a, b) { return b.genes[0].y1 - a.genes[0].y1; });
-    x.domain(data.map(function(d) { return d.Sample; }));
-
+    x.domain(data.map(function(d) { 
+      console.log("d.date.length: " + d.Date.length);
+      console.log("d.date: " + d.Date);
+      return d.Date;
+    }));
  
     svg.append("g")
 	.attr("class", "x axis")
@@ -67,7 +71,9 @@ d3.csv("data.txt", function(error, data) {
 	.data(data)
 	.enter().append("g")
 	.attr("class", "sample")
-	.attr("transform", function(d) { return "translate(" + x(d.Sample) + ",0)"; });
+	.attr("transform", function(d) { return "translate(" + x(d.Date) + ",0)"; });
+  // console.log("y(d.y0), y(d.y1): " + y(d.y0) + ", " + y(d.y1));
+  console.log("x.rangeBand(): " + x.rangeBand());
   sample.selectAll("rect")
   	.data(function(d) { return d.genes; })
 	  .enter().append("rect")
@@ -91,14 +97,14 @@ d3.csv("data.txt", function(error, data) {
 	    d.genes.forEach(function(d) { d.y0 /= y0; d.y1 /= y0; });
 	})
 	data.sort(function(a, b) { return b.genes[0].y1 - a.genes[0].y1; });
-	x.domain(data.map(function(d) { return d.Sample; }));
+	x.domain(data.map(function(d) { return d.Date; }));
 	svg.select(".x.axis")
 	    .transition()
 	    .duration(1000)
 	    .call(xAxis);
-	sample = svg.selectAll(".sample")
+	sample = svg.selectAll(".date")
 	    .data(data)
-	    .attr("transform", function(d) { return "translate(" + x(d.Sample) + ",0)"; });
+	    .attr("transform", function(d) { return "translate(" + x(d.Date) + ",0)"; });
  
 	sample.selectAll("rect")
 	    .data(function(d) { return d.genes; })
@@ -116,7 +122,7 @@ d3.csv("data.txt", function(error, data) {
   console.log(data);
   console.log(data[data.length - 1].genes);
   var last_sample = data[data.length - 1];
-  console.log( x(last_sample.Sample));
+  console.log( x(last_sample.Date));
   svg.selectAll("text")
 	.data(last_sample.genes)
 	.enter()
@@ -125,7 +131,7 @@ d3.csv("data.txt", function(error, data) {
 	    return d.name;
 	})
 	.attr("x", function(d) {
-	    return x(last_sample.Sample) + x.rangeBand() + 15;
+	    return x(last_sample.Date) + x.rangeBand() + 15;
 	})
 	.attr("y", function(d) {
 	    return (y(d.y0) + y(d.y1)) / 2;
