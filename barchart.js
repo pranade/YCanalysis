@@ -67,10 +67,10 @@ d3.csv("data.txt", function(error, data) {
 	arr.push(temp);
     }
     
-    var sample = svg.selectAll(".sample")
+    var sample = svg.selectAll(".date") //sample
 	.data(data)
 	.enter().append("g")
-	.attr("class", "sample")
+	.attr("class", "date") //sample
 	.attr("transform", function(d) { return "translate(" + x(d.Date) + ",0)"; });
   // console.log("y(d.y0), y(d.y1): " + y(d.y0) + ", " + y(d.y1));
   console.log("x.rangeBand(): " + x.rangeBand());
