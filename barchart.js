@@ -4,6 +4,10 @@ var margin = {top: 20, right: 100, bottom: 30, left: 40},
  
 var x = d3.scale.ordinal()
     .rangeRoundBands([0, width], .05);
+
+    // THESE LINES DON'T WORK
+// var x = d3.scale.ordinal()
+//   .domain(["S05","W06","S06","W07","S07","W08","S08","W09","S09","W10","S10","W11","S11","W12","S12","W13","S13","W14","S14"]);
  
 var y = d3.scale.linear()
     .rangeRound([height, 0]);
@@ -70,8 +74,8 @@ d3.csv("data.txt", function(error, data) {
     var sample = svg.selectAll(".date") //sample
 	.data(data)
 	.enter().append("g")
-	.attr("class", "date") //sample
-	.attr("transform", function(d) { return "translate(" + x(d.Date) + ",0)"; });
+	.attr("class", "date") //sample, no semicolon
+	 .attr("transform", function(d) { return "translate(" + x(d.Date) + ",0)"; });
   // console.log("y(d.y0), y(d.y1): " + y(d.y0) + ", " + y(d.y1));
   console.log("x.rangeBand(): " + x.rangeBand());
   sample.selectAll("rect")
@@ -96,15 +100,18 @@ d3.csv("data.txt", function(error, data) {
 	    d.genes = categories_shift.map(function(name) { return {name: name, y0: y0, y1: y0 += +d[name]}; });
 	    d.genes.forEach(function(d) { d.y0 /= y0; d.y1 /= y0; });
 	})
-	data.sort(function(a, b) { return b.genes[0].y1 - a.genes[0].y1; });
-	x.domain(data.map(function(d) { return d.Date; }));
-	svg.select(".x.axis")
-	    .transition()
-	    .duration(1000)
-	    .call(xAxis);
-	sample = svg.selectAll(".date")
-	    .data(data)
-	    .attr("transform", function(d) { return "translate(" + x(d.Date) + ",0)"; });
+	// TRYING TO REMOVE TO PREVENT X-AXIS SORTING
+  // data.sort(function(a, b) { return b.genes[0].y1 - a.genes[0].y1; });
+//   x.domain(data.map(function(d) { return d.Date; }));
+
+  // COMMENTED OUT - this code causes the x-axis to sort, which we don't want
+  // svg.select(".x.axis")
+  //     .transition()
+  //     .duration(1000)
+  //     .call(xAxis);
+  // sample = svg.selectAll(".date")
+  //     .data(data)
+  //     .attr("transform", function(d) { return "translate(" + x(d.Date) + ",0)"; });
  
 	sample.selectAll("rect")
 	    .data(function(d) { return d.genes; })
@@ -117,8 +124,6 @@ d3.csv("data.txt", function(error, data) {
 	last_sample = data[data.length - 1];
   };
   
- 
- 
   console.log(data);
   console.log(data[data.length - 1].genes);
   var last_sample = data[data.length - 1];
@@ -138,6 +143,5 @@ d3.csv("data.txt", function(error, data) {
 	})
 	.attr("font-size", "11px")
 	.attr("fill", "black");
-	
 	
 });
