@@ -17,7 +17,10 @@ app.get("/", function(req, res) {
 });
 
 app.get("/data.txt", function(req, res) {
-  res.sendfile('ycdata.txt')
+  // res.sendfile('industries.csv')
+  res.sendfile('deadoralive.csv')
+  // res.sendfile('biz2biz.csv')
+  // res.sendfile('ycdata3.txt')
   // res.sendfile('genes10.txt')
 });
 

@@ -40,20 +40,17 @@ d3.csv("data.txt", function(error, data) {
     console.log(categories);
     console.log("# of categories:" + categories.length);
     color.domain(categories);
-    color.range(colorbrewer.Spectral[categories.length]);
+    color.range(colorbrewer(categories.length));
  
     data.forEach(function(d) {
   var y0 = 0;
-	d.genes = color.domain().map(function(name) { return {name: name, y0: y0, y1: y0 += d[name]}; });// got rid of plus in front of d[name]
+	d.genes = color.domain().map(function(name) { if(!d[name]){ console.log('name', name); } return {name: name, y0: y0, y1: y0 += parseInt(d[name])}; });// got rid of plus in front of d[name]
   // console.log("got here");
   // console.log(d.y0,d.y1);
-  console.log("d.genes.length, d.genes: " + d.genes.length + ", " + d.genes);
 	d.genes.forEach(function(d) { d.y0 /= y0; d.y1 /= y0; });
     });
     //data.sort(function(a, b) { return b.genes[0].y1 - a.genes[0].y1; });
     x.domain(data.map(function(d) { 
-      console.log("d.date.length: " + d.Date.length);
-      console.log("d.date: " + d.Date);
       return d.Date;
     }));
  
@@ -97,7 +94,7 @@ d3.csv("data.txt", function(error, data) {
 	}
 	data.forEach(function(d) {
 	    var y0 = 0;
-	    d.genes = categories_shift.map(function(name) { return {name: name, y0: y0, y1: y0 += +d[name]}; });
+	    d.genes = categories_shift.map(function(name) { if(!d[name]){ console.log('name', name); } return {name: name, y0: y0, y1: y0 += parseInt(d[name])}; });
 	    d.genes.forEach(function(d) { d.y0 /= y0; d.y1 /= y0; });
 	})
 
@@ -117,17 +114,14 @@ d3.csv("data.txt", function(error, data) {
 	    .data(function(d) { return d.genes; })
 	    .transition()
 	    .delay(function(d, i) { return i * 50})
-	    .attr("y", function(d) {return y(d.y1);})
+	    .attr("y", function(d) { console.log('y stuff', d.y1); return y(d.y1);})
 	    .attr("height", function(d) { return y(d.y0) - y(d.y1); })
 	    .style("fill", function(d) { return color(d.name);});
  
 	last_sample = data[data.length - 1];
   };
   
-  console.log(data);
-  console.log(data[data.length - 1].genes);
   var last_sample = data[data.length - 1];
-  console.log( x(last_sample.Date));
   svg.selectAll("text")
 	.data(last_sample.genes)
 	.enter()
