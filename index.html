@@ -44,8 +44,10 @@ body {
 <script src="barchart.js"></script>
 <!-- <script src="d3.legend.js"></script> -->
 <script>
-  $('selectdata').on('change', function(e){
-    window.location = 'localhost:5000?data=' + $(e.target).value();
+  $('#selectdata').val( window.location.search.replace('?data=',''));
+  $('#selectdata').on('change', function(e){
+    console.log($(e.target).val());
+    window.location.search = '?data=' + $(e.target).val();
   });
   
 </script>
