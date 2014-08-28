@@ -1,6 +1,7 @@
 <!-- get rid of legend -->
  
 <!DOCTYPE html>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <meta charset="utf-8">
 <style>
  
@@ -33,7 +34,19 @@ body {
  
 </style>
 <body>
+  View:<select id="selectdata">
+      <option value="themes">Themes</option>
+      <!-- <option value="industries">Industries</option> -->
+      <option value="status">Status</option>
+      <option value="b2b">B2B/B2C</option>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="colorbrewer.js"></script>
 <script src="barchart.js"></script>
+<!-- <script src="d3.legend.js"></script> -->
+<script>
+  $('selectdata').on('change', function(e){
+    window.location = 'localhost:5000?data=' + $(e.target).value();
+  });
+  
+</script>
 </body>

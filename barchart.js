@@ -32,8 +32,8 @@ var svg = d3.select("body").append("svg")
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
- 
-d3.csv("data.txt", function(error, data) {
+  
+d3.csv(window.location.search.replace('?data=', ''), function(error, data) {
     // var categories = d3.keys(data[0]).filter(function(key) { return key !== "Sample"; });
     var categories = d3.keys(data[0]).filter(function(key) { return key !== "Date"; });
     var categories_shift = categories;
